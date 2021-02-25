@@ -3,13 +3,15 @@ import { getAllPostIds, getPostData } from '../../lib/posts'
 import Head from 'next/head'
 import Date from '../../components/date'
 import utilStyles from '../../styles/utils.module.css'
-import {GetStaticProps, GetStaticPaths} from 'next'
+import {GetStaticProps, GetStaticPaths, GetStaticPropsResult} from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
-export const getStaticProps: GetStaticProps = async ({ params }: {
-  params: {
-    id: string
-  }
-}) => {
+interface Params extends ParsedUrlQuery {
+  id: string,
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const params = context.params as Params
   const postData = await getPostData(params.id)
   console.log('getStaticProps postData', postData)
   return {
